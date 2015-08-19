@@ -1,0 +1,437 @@
+4 levels of software ecosystems:
+
+Scope of the firm
+Modularity technology
+	Composition system
+Extensibility concept for complements (plugins)
+	IPR strategy
+	Interface openness
+	Relationship with external complementors
+	Internal organization of the firm
+
+	Component-based software engineering is built on composition systems.
+	A composition system has a component model, a composition technique, and a composition language.
+
+	divide-and-conquer
+
+	A software component is a unit of composition
+	•  with contractually specified interfaces
+	•  and explicit context dependencies only
+
+	A software component
+	•  can be deployed independently and
+	•  is subject to composition by third parties
+
+	A component-based system has the following divide-and-conquer feature:
+	Consequence: the entire system can be reduced to one abstract node
+
+	Mainly, 2 types of component models are known
+	•  Modular decomposition (blackbox)
+•  Separation of concerns (graybox)
+
+
+	chapter 11
+	Components must be stored in component repositories with metadata (markup, attributes) to find them again
+
+Descriptions (Metadata)
+	•  Attributes: Keywords, Author data
+•  Usage protocols (behavioral specifications)
+	•  State machines
+	•  Sequence diagrams
+•  Contracts (pre/post/invariants)
+
+A public component repository is called a market, managed by a trader (broker)
+	Distributing or selling components
+	Companies can register components at the the trader
+	Customers can search components in the markets and buy or rent them
+
+	Computation about the metamodel in the model is reflection
+	■  Reflection: thinking about oneself with the help of metadata
+	■  The application can look at their own skeleton and change it
+	.  Allocating new classes, methods, fields
+	.  Removing classes, methods, fields
+
+This self modification is also called intercession in a meta-object protocol (MOP)
+	Read-only reflection is called introspection
+	■  The component can look at the skeleton of itself or another component and learn
+from it (but not change it!)
+
+	A system with a reflective architecture maintains metadata and a causal connection between meta- and base level.
+	■  The metaobjects describe structure, features, semantics of domain objects. This connection is kept consistent
+	►  Metaprogramming is programming with metaobjects
+
+	A meta-object protocol (MOP) is a reflective implementation of the methods of the metaclasses (interpreter for the language) describing the semantics, i.e., the behavior of the language objects in terms of the language itself.
+	￼
+	By changing the MOP (MOP intercession), the language semantics is changed
+
+	If the MOP language is object-oriented, default implementations of metaclass
+	methods can be overwritten by subclassing
+	■  and the semantics of the language is changed by subclassing
+
+	An Open Language has a static metalevel architecture (static metaprogramming architecture), with a static MOP
+	Users can write static metaprograms to adapt the language
+	Users can override default methods in the metamodel, changing the static language semantics or the behavior of the compiler
+
+	An Open Language can be used to adapt components from a supermarket at compile time, avoids the overhead of dynamic metaprogramming 
+
+	CORBA允许用户以两种不同的方式提出对象请求：
+	1）静态调用：
+	通过给定接口的存根，在编译了对象代码后，进入客户端的程序。因此，静态调用必须在编译时就知道对象及其类型。
+	2）动态调用：
+	通过ORB的动态调用接口DII，在运行时生成访问对象的代码。
+	不管客户以哪一种形式提出请求，ORB的任务是：找出所要对象的位置，激活该对象，向对象传递此请求。对象执行所请求的服务后，把输出值返回给ORB，然后再由ORB返回给客户。
+
+	The Trading Service is one of the CORBA Service Specifications. It can be seen as a generalization of the Naming Service; instead of merely providing a way for clients to search for available servers by name, it provides for servers to register their capabilities and clients to find them based on properties, specified via a simple constraint language.
+
+	￼A service offer is the information asserted by an exporter about the service it is ￼advertising. It contains
+	• the service type name,
+	• a reference to the interface that provides the service, and 
+	• zero or more property values for the service.
+	￼
+	￼A service offer can contain dynamic properties. The value for a dynamic property is ￼not held within a trader, it is obtained on-demand from the interface of a dynamic property evaluator nominated by the exporter of the service
+	￼￼
+	Standard Constraint language
+	￼Importers use service type and a constraint to select the set of service offers in which
+	￼they have an interest. The constraint is a well formed expression conforming to a
+	￼constraint languag
+
+	Policies
+	Policies provide information to affect trader behavior at run time. Policies are
+	■  max_search_card: maximum cardinality for the ongoing searches
+	■  max_match_card: maximum cardinality for matchings
+	■  max_hop_count: cardinality search depth in the graph	￼
+
+	Basic interfaces
+	■  Lookup (query)
+	■  Register (for export, retract, import of services)
+	■  Admin (info about services)
+■  Link (construction of trader graph)
+
+	CORBA
+	Component model
+	Mechanisms for secrets and transparency: very good
+	■  Interface and Implementation repository
+■  Component language hidden (interoperability)
+	■  Life-time of service hidden
+	■  Identity of services hidden
+	■  Location hidden
+	Composition technique
+	Mechanisms for connection ■  Mechanisms for adaptation
+	.  Stubs, skeletons, server adapters
+	■  Mechanisms for glueing: marshalling based on IDL
+	Mechanisms for aspect separation ■  Multiple interfaces per object
+.  Facade classes/objects (design pattern facade)
+	Mechanisms for meta-modeling
+	■  Interface Repositories with type codes
+	■  Implementation repositories
+	■  Dynamic call and traded call are reflective and introspective
+
+	Composition language
+	Weak: CORBA scripting provides the a facility to write glue code, but only black-box Composition
+
+	Static and Dynamic Invocation
+	The CORBA ORB in the BEA Tuxedo product supports two types of client/server invocations: static and dynamic. In both cases, the CORBA client application performs a request by gaining access to a reference for a CORBA object and invoking the operation that satisfies the request. The CORBA server application cannot tell the difference between static and dynamic invocations.
+
+	When using static invocation, the CORBA client application invokes operations directly on the client stubs. Static invocation is the easiest, most common type of invocation. The stubs are generated by the IDL compiler. Static invocation is recommended for applications that know at compile time the particulars of the operations they need to invoke and can process within the synchronous nature of the invocation. Figure 1-1 illustrates static invocation.
+	When using dynamic invocation, the CORBA client application can dynamically build operation requests for a CORBA object interface that has been stored in the Interface Repository. CORBA server applications do not require any special design to be able to receive and handle dynamic invocation requests. Dynamic invocation is generally used when the CORBA client application requires deferred synchronous communication, or by dynamic client applications when the nature of the interaction is undefined. For more information about using dynamic invocation, see Using the Dynamic Invocation Interface.
+	Client stubs provide the programming interface to operations that a CORBA object can perform. A client stub is a local proxy for the CORBA object. Client stubs provide a mechanism for performing a synchronous invocation on an object reference for a CORBA object. The CORBA client application does not need special code to deal with the CORBA object or its arguments; the client application simply treats the stub as a local object.
+
+	A CORBA client application must have a stub for each interface it plans to use. You use the idl command (or your Java ORB product's equivalent command) to generate a client stub from the OMG IDL definition of the CORBA interface. The command generates a stub file and a header file that describe everything that you need if you want to use the client stub from a programming language, such as C++ or Java. You simply invoke a method from within your CORBA client application to request an operation on the CORBA object.
+
+	Interface Repository
+	The Interface Repository contains descriptions of a CORBA object's interfaces and operations. The information stored in the Interface Repository is equivalent to the information defined in an OMG IDL file, but the information is accessible programmatically at run time. CORBA client applications use the Interface Repository for the following reasons:
+
+	CORBA client applications that use dynamic invocation use the Interface Repository to learn about a CORBA object's interfaces, and to invoke operations on the object.
+	CORBA client applications that use static invocation do not access the Interface Repository at run time. The information about the CORBA object's interfaces is included in the client stub.
+
+	CORBA Interoperable Object Reference – IOR
+	A unique key for an object
+	Consists of:
+	■  Type name (code), i.e., index into Interface Repository
+	■  Protocol and address information (e.g., TCP/IP, port #, host
+			name), could support more than one protocol
+	■  Object key:
+	Opaque data only readable by generating ORB (pointer) 
+	Object decorator (adapter) name (for BOA)
+
+	Name service :Binding of a name associates a name to an object in a name spaie
+	Object Services:storing objects in data bases
+
+Common Facilities (Horizontal CORBAfacilities)
+
+Common Facilities sind komplexe funktionale Einheiten, die einen wesentlichen Teil einer Anwendung ausmachen. Sie bauen auf den Object Services auf und sind stärker spezialisiert als diese.
+Beispiele für Common Facilities sind graphische Nutzeroberflächen, Dienste zur Druckersteuerung und zur Dokumentenverwaltung. Ihre Standardisierung führt zu einer konzeptionellen Integrität verschiedener Anwendungen, so daß sich ein Nutzer beispielsweise nicht für jede Anwendung auf einen neuen Mechanismus zum Ausdrucken von Dokumenten umstellen muß.
+
+Domain Services (Vertical CORBAfacilities)
+
+Die Domain Services sind Lösungen für spezielle Anwendungsgebiete, die in Bezug auf ihren prinzipiellen Aufbau standardisiert sind. Häufig handelt es sich dabei auch nur um eine systematische Beschreibung von bereits existierender Software in IDL. Beispiele für Domain Services sind Softwarepakete für das Finanzwesen, für das Gesundheitswesen, für die Telekommunikation usw. Diese Anwendungen werden als Kombination von Object Services und Common Facilities definiert.
+
+EJB integrates several principles:
+■  Dynamic deployment
+■  Deployment-time middleware code generation (implicit middleware)
+■  Containers as application servers for transparency of transaction and persistency
+■  Annotation-based (metadata-based) middleware code generation
+■  A simple XML-based composition language
+
+Java-based Component Model (language specific)
+■  Static components contain classes
+■  Dynamic components contain objects
+■  Component Types:
+■  Session Beans: for business logic and application algorithms
+■  Message-Driven Beans: Same function as session beans
+■  Called by sending messages instead of calling methods
+■  Have a message queue, react to an asynchronous message connector
+■  Entity Beans: for business objects (data)
+■  Persistent object that caches database information (an account, an employee, an order, etc)
+■  Component factory (Home bean), following Abstract Factory pattern
+■  Customization possible by metadata and configuration files (deployment descriptors)
+
+Composition Technique
+■  Adaptation/Glue:
+	.  Distribution (not transparent, see local/remote interfaces)
+	.  Transparent network protocols
+	.  Transparent transactions via Containers
+	.  Transparent persistency via Containers
+
+The bean container is a run-time façade for all beans on a server with infrastructure (application server)
+►  In a container, some business logic may run on the server, hiding the direct data access
+►  The container manages the beans with
+►  Factory: create bean
+►  Repository: find, remove bean
+►  The container provides run-time middleware services for the beans
+
+The bean container is a deployment infrastructure
+►  The container generates dynamically middleware code for the bean when it is deployed on a machine (implicit middleware)
+	.  Bean developer only writes business logic and declares the middleware services (transactions, persistence, security, resource management, ...etc) by specifying metadata (annotations)
+	.  The middleware services are provided automatically by code generation
+	.  In explicit middleware (e.g., CORBA), middleware services have to be addressed by the programmer
+
+Bean provider (bean producer) is an application expert
+■  Builds a EJB-jar with application specific methods, deployment-descriptor, remote, home interface
+
+Application assembler composes EJB to larger EJB, i.e., applications units. 
+■  She extends the deployment-descriptors
+
+Bean deployer (employer) puts the EJB-jar into a deployment environment, consisting of a EJB Server and Container
+■  Preparing the EJB for use, generating middleware code
+■  Is the EJB connected to a EJB-Container, it is configured and usable
+Server provider is a specialist in transaction management and distributed systems.
+■  Provides basic functionality for distribution
+
+Container provider delivers the container tools for configuration and for run time inspection of EJB ■  The Container manages persistency of Entity Beans, generation of communication code (glue code) to￼underlying data bases
+
+Beans do not support location transparency ►  For a local call, you must provide local interfaces
+■  local interface corresponding to remote interface
+■  local home interface corresponding to home interface
+■  To switch between local and remote calls it is necessary to change the code
+
+Remote:
+►  Client calls a local stub
+►  Marshalling
+►  Stub calls skeleton over a network connection
+►  Unmarshalling
+►  EJB object is called, performs
+middleware services
+►  Bean is called
+►  Repeat to return result
+
+Local:
+►  Client calls a local object
+►  Local object performs middleware services
+►  Bean is called
+►  Control is returned to the client
+
+EJB-jar file
+■  bean class
+■  home (and local home) interface
+■  remote (and local) interface
+■  (possibly vendor-specific files)
+■  Deployment descriptor
+
+ Deployment: The application server is notified of the new EJB component file by
+■  using a command-line tool,
+■  dropping the EJB file in a specific directory,
+■  or in some other way
+►  The EJB-jar file is verified by the container
+►  The container generates an EJB object and home object
+►  The container generates any necessary further RMI stubs, skeletons, and interceptors
+
+Message-Driven Beans
+MDBs are also stateless
+►  MDBs don't have a home, local home, remote or local interface
+Why use MDB instead of Session Beans?
+►  Asynchronous processing means that clients don't have to wait for the bean to finish
+►  Reliability
+.  With RMI-IIOP the server has to be up when the client is calling it.
+.  With a message-oriented middleware (MOM) that supports guaranteed delivery, the
+message is delivered when the server gets back online
+.  Support for subscription of multiple senders and receivers
+.  RMI-IIOP is limited to one client talking to one server
+
+Object-relational mapping necessary (from Java classes to relational databases)
+■  Map the object to a relational database when it is stored
+■  Queries possible by using an special EJB query language (EJB-QL) that is
+translated to specific query languages of relational databases
+■  The mapping is either hand-coded or achieved by finished products
+
+The CMP entity bean is always abstract (ProductBean)
+■  The container generates a concrete subclass (ProductBeanImpl)
+■  An abstract persistence schema is declared in the deployment descriptor so the container will know what to generate
+
+CMP: Container-Managed Persistence
+A CMP bean is an entity bean whose state is synchronized with the database automatically. In other words, the bean developer doesn't need to write any explicit database calls into the bean code; the container will automatically synchronize the persistent fields with the database as dictated by the deployer at deployment time.
+When a CMP bean is deployed, the deployer uses the EJB tools provided by the vendor to map the persistent fields in the bean to the database. The persistence fields will be a subset of the instance fields, called container-managed fields, as identified by the bean developer in the deployment descriptor.
+
+Mechanisms for secrets and transparency: very good
+■  Interface and implementation repository
+■  Location, transaction, persistence transparency
+■  Life-time of service hidden, states hidden
+■  Deployment-time generation of implicit middleware code
+■  Communication protocol can be replaced (RMI-IIOP, CORBA-IIOP)
+►  Parameterization by metadata annotations
+■  The services to use are specified: transaction protocol, filters
+■  Deployment of EJB supported ■  Code generation of stubs
+►  Standardization: de-facto standard in the Java world
+■  Good tutorials
+■  Technical vs. application specific vs. business components
+
+Composition Technique
+►  Mechanisms for connection
+■  Mechanisms for locating
+.  JNDI
+■  Mechanisms for adaptation
+.  Interceptors (server-side skeletons) ■  Mechanisms for glueing
+.  Container producing glue code
+►  Mechanisms for aspect separation
+■  Middleware services declared in the deployment descriptors
+►  Mechanisms for meta-modeling
+■  with Java reflection and metadata annotations
+►  Scalability
+■  Pooling ensures scaling
+
+Composition Language
+►  The deployment descriptor language of EJB 2.0 is a simple composition language
+►  Limited:
+■  Glue code is provided by the container
+■  Services can be added/removed/modified by changing the deployment descriptor
+■  CMP entity beans can be customized by changing the deployment descriptoro
+
+►  EJB is big, not for everything
+■  Allows the developer to focus on business logic
+■  Provides very useful services, like transparency, persistence, security, networking independence, etc
+■  Can interoperate with CORBA
+►  It is a well-defined standard by Oracle
+►  It works in symbiosis with several other APIs
+■  JNDI, RMI, JDBC, JMS, etc
+
+Stateless session beans can easily be pooled (reused) to allow better scaling
+A stateful session bean has to implement:
+■  ejbPassivate(): Called to let the bean release any resources it holds before it gets
+swapped out
+■  ejbActivate(): Called right after the bean has been swapped in to let it acquire the resources it needs
+
+Abstraction is neglection of unnecessary detail
+■  Display and consider only essential information：
+
+Heuristic Separation of Concerns (SoC)
+■  Different concepts should be separated so that they can be specified independently
+■  Every separated concept neglects unnecessary details
+■  Dimensional specification: Specify a system from different viewpoints and
+abstract for every viewpoint from unnecessary details
+
+Software architecture consists of 4 views
+■  logical view (conceptual view, component-connector architectures)
+.  specifies the functional requirements and structure, in a component-based UML model
+.  This is the focus in this chapter
+■  process view (dynamic view)
+.  specifies non-functional features as performance, reliability, fault tolerance, parallelism, division in
+processes.
+■  development view (project tree structure)
+.  specifies the file organisation the modules, libraries, subsystems, the static structure the software
+in the development environment
+■  physical view (run-time view)
+.  specifies the mapping of the software to the hardware, distribution, processes, etc., and the run-
+time execution structure
+For all these views, architecture diagrams can be made in different modelling languages
+
+Elements of Architecture Description Languages
+	Ports abstract interface points (event channels, methods)
+	■  Ports specify the data-flow into and out of a component￼￼
+Connectors are special communication components
+■  Connectors are attached to ports
+■  Connectors abstract from the
+concrete carrier
+■  Can be binary or n-ary
+■  Connector end is called a role
+■  A role fits only to certain types of ports (typing)
+Encapsulation is a composition operator to build hierarchies
+
+►  Ports are provided or required
+►  A port is provided, if the component offers its implementation for external use
+►  A port is required, if the component needs an implementation for it from another component in the external world
+►  Ports are
+►  Synchronous or asynchronous (partner has to wait or not)
+►  Singular or continuous (communication can take place once or many times)
+►  Atomic or composite
+
+Input data ports are synchronous or asynchronous: in(data)
+Output data ports are synchronous or asynchronous: out(data)
+Stream ports (channels, pipes): continuous data port
+Event port: asynchronous continuous data port
+
+Ports can be atomic or composite (structured)
+►  A service is a structured port (groups of ports)
+►  A data service is a tuple of atomic ports:
+
+An architecture style employs for a system or a layer only particular architectural concepts and defines constraints on their employment
+Architectural sytems can be expressed by architectural rules (architectural constraints), often specified in logic
+■  Ex.: Pipe-and-filter style, repository style, call-based style, event-driven architecture, 3-tier architecture, and many more
+Data-flow graphs (data flow diagrams, DFD) focus on data flowing through operations
+■  Activity diagrams: data flows through actions
+Control-flow graphs (CFG) focus on control dependencies
+■  Nodes are control-flow operations that start other operations on a state
+■  The standard representation for imperative programs
+State systems focus on transitions between states
+■  Finite State Machines (FSM): events trigger state transitions
+■  Statecharts: Hierarchical FSM
+
+A reference architecture is a template or framework of an architecture, most often for a particular application domain.
+■ It uses a predominant architectural style
+■ Strong emphasis on architectural design rules
+■ Can be instantiated or derived to a concrete architecture
+■ Often used in product families
+
+What ADL Offer for the Software Process
+Support for requirements specification
+■  Client can understand the architecture graphics well
+■  Architectural styles classify the nature of a system (similar to design patterns)
+Design support
+■  Visual and textual views to the software resp. the design
+■  Refinement of architectures (stepwise design, design to several levels)
+■  Design of product families
+.  A reference architecture fixes the commonalities of the product line
+.  The components express the variability
+Support for validation
+■  Consistency checking tools for consistency of architectures
+■  Type checking: are all ports bound? Do all protocols fit?
+■  Does the architecture corresponds to a certain style ?
+■  Does the architecture fit to a reference architecture?
+■  Checking, analysing deadlock, liveness, fairness checking
+
+BPEL, a web service composition language
+BPEL is an executable language for workflows, executable business processes
+►  An architectural language for web services
+■  Based on workflow languages
+■  Mixing control and data flow operators
+BPEL is a composition language composing web services at their ports
+►  BPEL uses WSDL for service interface descriptions, as IDL
+►  BPEL adds connection types (partner link types)
+BPEL is a activity-diagram like language,
+■  with parallelism and transactions
+■  with different kind of join and split operators
+■  with ports and connections
+■  BPEL can be edited graphically, and has an XML abstract syntax
+BPEL uses XML syntax
+BPMN
+•  TheBusinessProcessModellingNotation(BPMN)
+•  Graphicalnotationforconceptualbusinessprocesses
